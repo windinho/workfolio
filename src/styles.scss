@@ -11,7 +11,7 @@ main {
   h2,
   h3,
   p {
-    color: #00384a;
+    color: #a88d16;
     z-index: 10;
     text-align: center;
   }
@@ -160,7 +160,6 @@ nav {
       }
 
       &.open {
-
         span:nth-child(1),
         span:nth-child(3) {
           width: 95%;
@@ -239,7 +238,7 @@ nav {
         font-size: 14px;
       }
 
-      &+li {
+      & + li {
         margin-top: 10px;
       }
     }
@@ -272,15 +271,15 @@ nav {
     width: calc(100vw - 10px);
     height: calc(100vh - 10px);
 
-    ul+div {
+    ul + div {
       margin-top: 8vh;
     }
   }
 }
 
-main:not(.form) .hero {
-  cursor: none;
-}
+// main:not(.form) .hero {
+//   cursor: none;
+// }
 
 .hero {
   position: relative;
@@ -306,6 +305,37 @@ main:not(.form) .hero {
     }
   }
 
+  $positions: (
+    (100px, 200px, 30deg),
+    (50px, 800px, 60deg),
+    (300px, 400px, 90deg)
+  );
+
+  b {
+    color: #fff;
+    font-size: 16px;
+    font-family: cursive;
+    animation: grow 2s ease infinite alternate;
+
+    &::before {
+      content: "#";
+      letter-spacing: 2px;
+    }
+
+    @for $i from 1 through length($positions) {
+      $top: nth(nth($positions, $i), 1);
+      $left: nth(nth($positions, $i), 2);
+      $rotate: nth(nth($positions, $i), 3);
+
+      &:nth-child(#{$i}) {
+        position: absolute;
+        top: $top;
+        left: $left;
+        transform: rotate($rotate);
+      }
+    }
+  }
+
   .links {
     display: flex;
     font-size: 2em;
@@ -316,8 +346,12 @@ main:not(.form) .hero {
     font-weight: bold;
     border: none;
     background-color: transparent;
-    // cursor: pointer;
+    cursor: pointer;
     z-index: 10;
+
+    &:hover + .overlay .hollow {
+      transform: translate(-50%, -50%) scale(2);
+    }
   }
 
   .marquee {
@@ -338,7 +372,7 @@ main:not(.form) .hero {
     background: #fff;
     width: 100%;
     height: 100%;
-    mix-blend-mode: screen;
+    mix-blend-mode: exclusion;
 
     .hollow {
       display: flex;
@@ -348,14 +382,14 @@ main:not(.form) .hero {
       height: 400px;
       box-shadow: inset 0px 0px 40px 50px #fff;
       border-radius: 50%;
-      color:#2e99bb;
+      color: #2e99bb;
       clip-path: circle(49% at 50% 50%);
-      transition-duration: .8s;
+      transition-duration: 0.8s;
       transition-timing-function: ease-out;
       position: fixed;
       top: 0;
-      left: 0;  
-      transform: translateZ(0);
+      left: 0;
+      transform: translate(-50%, -50%) translateZ(0);
       background: #000;
 
       @media (max-width: 767px) {
@@ -374,6 +408,7 @@ main:not(.form) .hero {
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
+    mix-blend-mode: multiply;
 
     @media (max-width: 767px) {
       p {
@@ -442,7 +477,7 @@ main:not(.form) .hero {
   }
 
   @media (max-width: 767px) {
-    section+section {
+    section + section {
       margin-top: 200px;
     }
 
@@ -497,7 +532,7 @@ main:not(.form) .hero {
       }
     }
 
-    section+section {
+    section + section {
       margin-top: 200px;
     }
   }
@@ -538,7 +573,7 @@ main:not(.form) .hero {
       }
     }
 
-    >div+div {
+    > div + div {
       margin-top: 30px;
     }
 
@@ -618,14 +653,13 @@ $gradientImages: 3; // Number of gradient images
 @keyframes gradients {
   @for $i from 0 through $gradientImages {
     $percentage: percentage($i / $gradientImages); // Calculate the percentage
-    $url: url('./images/gradients/#{$i + 1}.svg'); // Generate the URL
+    $url: url("./images/gradients/#{$i + 1}.svg"); // Generate the URL
 
     #{$percentage} {
       background-image: $url;
     }
   }
 }
-
 
 @keyframes scroll-left {
   0% {

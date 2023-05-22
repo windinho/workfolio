@@ -1,32 +1,37 @@
 import React, { useEffect, useState, useRef } from "react";
-// import Products from "./Components/Products";
-// import Services from "./Components/Services";
-import "./styles.scss";
-// import { RandomObjectMover } from "./CoreComponents/Wander";
-// import { ReactComponent as LogoIcon } from "../../images/logo.svg";
-// import Footer from "./Components/Footer";
 import Nav from "./Components/Nav";
 import NavPill from "./Components/NavPill";
-
-const vh = parseInt(
-  Math.max(
-    document.documentElement.clientHeight || 0,
-    window.innerHeight || 0
-  )
-);
+import "./styles.scss";
 
 const App = () => {
   const [isNavOpen, setIsNavOpen] = useState(false);
-  const [isCursorVisible, setCursorVisible] = useState(true);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
   const hollowRef = useRef(null)
 
+  let mouseX = 0;
+  let mouseY = 0;
   useEffect(() => {
+    let ballX = 0;
+    let ballY = 0;
+
+    let speed = 0.08;
+
+    function animate() {
+      let distX = mouseX - ballX;
+      let distY = mouseY - ballY;
+
+      ballX = ballX + (distX * speed);
+      ballY = ballY + (distY * speed);
+
+      hollowRef.current.style.left = ballX + "px";
+      hollowRef.current.style.top = ballY + "px";
+
+      requestAnimationFrame(animate);
+    }
+    animate();
+    
     const handleMouseMove = (e) => {
-      let Y = e.pageY + 200 < vh ? e.pageY - 200 : vh - 200,
-        X = e.pageX - 200;
-      setPosition({ x: X, y: Y });
-      hollowRef.current.setAttribute("style", `top: ${Y}px; left: ${X}px;`);
+      mouseX = e.pageX;
+      mouseY = e.pageY;
     };
 
     const handleMouseStop = () => {
@@ -46,7 +51,10 @@ const App = () => {
       <NavPill setIsNavOpen={setIsNavOpen} isNavOpen={isNavOpen} />
       <Nav isNavOpen={isNavOpen} />
       <div className="hero">
-        <button style={{ cursor: isCursorVisible ? 'pointer' : 'none' }} className="links" onClick={() => { setIsNavOpen(!isNavOpen); }}>Work<br />Experience</button>
+        {/* <button className="links" onClick={() => { setIsNavOpen(!isNavOpen); }}>Work<br />Experience</button> */}
+        <b>React</b>
+        <b>HTML</b>
+        <b>CSS</b>
         <div className="overlay">
           <div className="hollow" ref={hollowRef}></div>
         </div>
